@@ -1,11 +1,14 @@
 package Clinic;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
-   ArrayList<Vet> vetList = new ArrayList<>();
    Scanner scnr = new Scanner(System.in);
+   private ArrayList<Vet> vetList = new ArrayList<>();
+   private List<Pet> registeredPets = new ArrayList<>();
+   private Owner user = null; //tracks the current user using scanner
    
    public Menu(){
       Vet generalVet = new Vet("Dr.", "male", 65, "General Expert", "Monday, Tuesday, Wednesday, Thursday");
@@ -43,26 +46,50 @@ public class Menu {
         int age = scnr.nextInt();
 
 
-        Owner user = new Owner(name,number,address,email,age);
+        user = new Owner(name,number,address,email,age);
 
-        System.out.println("Thank you!");
+        System.out.println("Thank you! " + name + " for registering with us!");
 
-        displayPetMenu();
+        displayMenu();
    }
    
+   //Register appointment -> register a pet -> display all veternarians -> book a time
+   //Check Medical records
+   //Check Pet Status
+   //Payment plan
    public void displayMenu(){
       System.out.println("What would you like to do today?");
         System.out.println("1. Register a pet");
         System.out.println("2. Check Medical Records");
         System.out.println("3. Check Pet Status");
-        System.out.println("4. Register an appointment");
-        System.out.println("5. Display all Vetenarians");
+        System.out.println("4. Checkout");
 
         Scanner scnr = new Scanner(System.in);
         int option = scnr.nextInt();
 
         if (option == 1){
-            //Call Pet menu instead of huge chunk of code
+            //Register a pet 
+            //need to check if they already have some pet registered
+            if (registeredPets.size() > 0) {
+                System.out.println("1. You currently have " + registeredPets.size() + " pet(s) registered under your name.");
+                System.out.println("Would you like to register another pet?");
+                System.out.println("1. Register a pet");
+                System.out.println("2. Back to main menu");
+                int ans = scnr.nextInt();
+                if (ans == 1)
+                    displayPetMenu();
+                else displayMenu();
+
+       } else {
+            System.out.println("1. You currently have no pets registered.");
+            System.out.println("Would you like to register a pet?");
+            System.out.println("1. Register a pet");
+            System.out.println("2. Back to main menu");
+            int ans = scnr.nextInt();
+            if (ans == 1)
+                    displayPetMenu();
+                else displayMenu();
+       }
         }
         if (option == 2){
             //medical records display
@@ -76,6 +103,24 @@ public class Menu {
         if (option == 5){
             displayVetenarians();
         }
+   }
+
+   private String moreThanOnePetMenu() {
+       System.out.println("\n--- PET REGISTRATION ---");
+       // assume the owner already has at least one pet so they can register another
+       if (user.pet.size() > 0) {
+           System.out.print("You have a pet registered. Do you want to register a new one? (Y/N): ");
+           String ans = scnr.nextLine().trim().toUpperCase();
+
+           if (ans.equals("Y")) {
+               return  "Y";// Assuming first pet for simplicity
+           }
+       }
+       return "N";
+   }
+   public void displayMedicalRecords(){
+    //need to check if pet's record has been recorded before
+    //if first time then no, if after check up then yes
    }
 
    public void displayVetenarians(){
@@ -115,38 +160,43 @@ public class Menu {
             }
         }
         
-    }
+    } 
 
     public void displayPetMenu(){
+        String petType = null;
         System.out.println("Now we would like to ask, register your pet.");
         System.out.println("Now tell us what type of pet are you choosing");
         System.out.println("1. Dog \n2. Cat\n3. Reptile\n4. Fish\n5. Birds\n6. Other");
-        int petType = scnr.nextInt();
+        int answer = scnr.nextInt();
+        if(answer == 1)
+            petType = "Dog";
+        else if  (answer == 2)
+            petType = "Cat";
+        else if  (answer == 3)
+            petType = "Reptile";
+        else if  (answer == 4)
+            petType = "Fish";
+        else if  (answer == 5)
+            petType = "Birds";
+        else petType = "Other";
+        
 
-        System.out.println("What's your pet's name?");
+        System.out.println("What's your pet's name?\n");
         String petName = scnr.nextLine();
 
-        System.out.println("What's " + petName + "'s bloodType?");
+        System.out.println("What's " + petName + "'s bloodType?\n");
         String bloodType = scnr.nextLine();
 
-        System.out.println("What's " + petName +"'s age?");
+        System.out.println("What's " + petName +"'s age?\n");
         int petAge = scnr.nextInt();
 
-        System.out.println("What color is "+ petName+ "?");
+        System.out.println("What color is "+ petName+ "?\n");
         String speciesColor = scnr.nextLine();
 
-        System.out.println("What's "+petName+"'s gender?");
+        System.out.println("What's "+petName+"'s gender?\n");
         String petGender = scnr.nextLine();
 
-
-        if (petType == 1){
-            //Dog pet = new Dog(petName, bloodType, petAge, speciesColor, petGender);
-        }
-        if (petType == 2){}
-        if(petType == 3){}
-        if(petType == 4){}
-        if(petType == 5){}
-        else{
-        }
+        Pet pet = new Pet(petType, petName, bloodType, petAge, speciesColor, petGender);
+        registeredPets.add(pet);
     }
 }

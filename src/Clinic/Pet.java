@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public class Pet{
     // Attributes
+    private String petType;
     private String name;
     private String bloodType;
     private int age;
@@ -12,7 +13,8 @@ public class Pet{
     private String id;
 
     // Constructor
-    public Pet(String name, String bloodType, int age, String speciesColor, String gender){
+    public Pet(String petType, String name, String bloodType, int age, String speciesColor, String gender){
+        this.petType = petType;
         this.name = name;
         this.bloodType = bloodType;
         this.age = age;

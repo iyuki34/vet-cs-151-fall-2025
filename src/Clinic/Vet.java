@@ -8,13 +8,15 @@ public class Vet {
     public int age;
     public String title;
     public String availableDays;
+    public String availableHour;
     
-    public Vet(String name, String gender, int age, String title, String availableDays){
+    public Vet(String name, String gender, int age, String title, String availableDays, String availibleHour){
         this.name = name;
         this.gender = gender;
         this.title = title;
         this.age = age;
         this.availableDays = availableDays;
+        this.availableHour = availibleHour;
     }
 
     public String getName(){

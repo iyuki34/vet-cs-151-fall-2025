@@ -28,7 +28,7 @@ public class Menu {
    }
 
    public void introMenu(){
-      System.out.println("Welcome to ____ Vetenarian. We welcome you with open arms!");
+      System.out.println("Welcome to Pet Wellness Clinic. We welcome you with open arms!");
         System.out.println("Now we would like to ask for your name.");
         String name = scnr.nextLine();
 
@@ -45,7 +45,7 @@ public class Menu {
 
         System.out.println("Final question. How old are you?");
         int age = scnr.nextInt();
-
+        //throw exception if not int
 
         user = new Owner(name,number,address,email,age);
 
@@ -59,9 +59,10 @@ public class Menu {
    //Check Pet Status
    //Payment plan
    public void displayMenu(){
-      System.out.println("What would you like to do today?");
+        System.out.println("===Main Menu===");
+        System.out.println("What would you like to do today?");
         System.out.println("1. Register a pet");
-        System.out.println("2. Select Pet and Book an Appointment");
+        System.out.println("2. Select Pet(s) and Book an Appointment");
         System.out.println("3. Check Medical Records");
         System.out.println("4. Payment Checkout");
         System.out.println("5. Exit Vet\n ");
@@ -73,10 +74,10 @@ public class Menu {
             //Register a pet 
             //need to check if they already have some pet registered
             if (registeredPets.size() > 0) {
-                System.out.println("1. You currently have " + registeredPets.size() + " pet(s) registered under your name.");
-                System.out.println("Would you like to register another pet?\n");
+                System.out.println("\nYou currently have " + registeredPets.size() + " pet(s) registered under your name.");
+                System.out.println("Would you like to register another pet?");
                 System.out.println("1. Register a pet");
-                System.out.println("2. Back to main menu");
+                System.out.println("2. Back to main menu\n");
                 int ans = scnr.nextInt();
                 if (ans == 1)
                     displayPetMenu();
@@ -85,10 +86,10 @@ public class Menu {
                 //else throw an exception error;
 
        } else {
-            System.out.println("1. You currently have no pets registered.");
-            System.out.println("Would you like to register a pet?\n");
+            System.out.println("\nYou currently have no pets registered.");
+            System.out.println("Would you like to register a pet?");
             System.out.println("1. Register a pet");
-            System.out.println("2. Back to main menu");
+            System.out.println("2. Back to main menu\n");
             int ans = scnr.nextInt();
             if (ans == 1)
                     displayPetMenu();
@@ -142,7 +143,7 @@ public class Menu {
         int count=1;
         for(Pet pet : registeredPets)
         {
-            System.out.println(count + ". " + pet.getName() +", " + pet.getPetType() + ", " + pet.getAge() + pet.getGender());
+            System.out.println(count + ". " + pet.getName() +", " + pet.getPetType() + ", " + pet.getAge() + ", "+ pet.getGender());
             count++;
         }
         
@@ -215,7 +216,8 @@ public class Menu {
             int result = scnr.nextInt();
 
             if (result == 1){
-                //Go back to the main menu
+                //return to main menu
+                displayMenu();
             }
             if (result == 2){
                 index++;
@@ -233,6 +235,7 @@ public class Menu {
     public void displayPetMenu(){
         //PET TYPE!!!
         String petType = null;
+        System.out.println("===Pet Resgistration===");
         System.out.println("\nNow we would like to ask, register your pet.");
         System.out.println("Now tell us what type of pet are you choosing (1-6)");
         String[] typeList = {"Dog", "Cat", "Reptile", "Fish", "Birds", "Others"};
@@ -257,7 +260,7 @@ public class Menu {
         System.out.println("\nWhat's your pet's name?");
         String petName = scnr.nextLine();
 
-        System.out.println("What's " + petName + "'s bloodType?");
+        System.out.println("\nWhat's " + petName + "'s bloodType?");
         String[] bloodTypes = {"O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"};
         for (int i = 0; i < bloodTypes.length; i++) {
             System.out.println((i + 1) + ". " + bloodTypes[i]);
@@ -283,7 +286,7 @@ public class Menu {
         String speciesColor = scnr.nextLine();
         
         //PET GENDERRR
-        System.out.println("What's "+petName+"'s gender? (1-2)");
+        System.out.println("\nWhat's "+petName+"'s gender? (1-2)");
         String[] genderList = {"Female","Male"};
         for (int i = 0; i < genderList.length; i++) {
             System.out.println((i + 1) + ". " + genderList[i]);

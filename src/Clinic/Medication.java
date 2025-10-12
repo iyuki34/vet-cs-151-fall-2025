@@ -7,6 +7,7 @@ public abstract class Medication implements Service{
     private int numDosesInStock;
     //private refilldate;
     public abstract String toHeal();
+    public abstract int refillOrder();
 
     public Medication(String medicationName, double price, int numDosesInStock) {
         this.medicationName = medicationName;

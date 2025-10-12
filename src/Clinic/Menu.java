@@ -54,7 +54,7 @@ public class Menu {
         displayMenu();
    }
    
-   //Register appointment -> register a pet -> display all veternarians -> book a time
+   //Select Pet and book an appointmet -> Select registered pets to book -> display vets and choose and time 
    //Check Medical records
    //Check Pet Status
    //Payment plan
@@ -109,11 +109,12 @@ public class Menu {
             //calls appointment class
         }
         if (option == 5){
-            displayVetenarians();
+            System.out.println("Thank you for visiting our Hospital and we hope you enjoyed your visit");
+            scnr.close();
         }
    }
 
-   //helper method
+   //helper method, might use instead of coding it twice
    public ArrayList<Pet> selectionFromList(){
     
     return null;
@@ -155,15 +156,15 @@ public class Menu {
             System.out.println("Here are the selected pet(s) so far: \n");
             for(Pet pet: petsToCheckRecords)
             {
-                System.out.println(count + ". " + pet.getName() +", " + pet.getPetType() + ", " + pet.getAge() + pet.getGender());
+                System.out.println(count + ". " + pet.getName() +", " + pet.getPetType() + ", " + pet.getAge() + ", " + pet.getGender());
             }
             choice = scnr.next();
-            //have selected pets enter petsToBook
+            //have selected pets enter petsToCheckRecords
         }
         System.out.println("\nDisplaying records for your selected pets!");
         for(Pet pet : petsToCheckRecords)
         {
-            System.out.println("Name: " + pet.getName() +"\nPet Type: " + pet.getPetType() + "\nAge: " + pet.getAge() + "\nGender': " +pet.getGender()
+            System.out.println("Name: " + pet.getName() +"\nPet Type: " + pet.getPetType() + "\nAge: " + pet.getAge() + "\nGender : " +pet.getGender()
             + "\nBlood Type: " + pet.getBloodType() + "\nColor: " + pet.getSpeciesColor() +"\n");
             /**
              * need appointment class to be done and the option == 2 in main menu logic flow to be done
@@ -177,6 +178,7 @@ public class Menu {
              */
         }
 
+        //forced to go back to main menu bc this isn't the last stop
         System.out.println("1. Back to main menu");
         int ans = scnr.nextInt();
         if (ans == 1)
@@ -229,44 +231,73 @@ public class Menu {
     } 
 
     public void displayPetMenu(){
+        //PET TYPE!!!
         String petType = null;
-        System.out.println("Now we would like to ask, register your pet.");
-        System.out.println("Now tell us what type of pet are you choosing");
-        System.out.println("1. Dog \n2. Cat\n3. Reptile\n4. Fish\n5. Birds\n6. Other");
-        int answer = scnr.nextInt();
+        System.out.println("\nNow we would like to ask, register your pet.");
+        System.out.println("Now tell us what type of pet are you choosing (1-6)");
+        String[] typeList = {"Dog", "Cat", "Reptile", "Fish", "Birds", "Others"};
+        for (int i = 0; i < typeList.length; i++) {
+            System.out.println((i + 1) + ". " + typeList[i]);
+        } 
+        int choice = scnr.nextInt(); 
         //throw an exception if not int
         scnr.nextLine(); 
         // scnr.nextLine() allows petName to be read because for some reason a nextLine() right after
         //a nextInt() takes in the "Enter" and our petName can't be read;
-        if(answer == 1)
-            petType = "Dog";
-        else if  (answer == 2)
-            petType = "Cat";
-        else if  (answer == 3)
-            petType = "Reptile";
-        else if  (answer == 4)
-            petType = "Fish";
-        else if  (answer == 5)
-            petType = "Birds";
-        else petType = "Other";
-        
+        if(choice >= 1 && choice <= typeList.length){
+            petType = typeList[choice -1];
+        }
+        else {
+            //throw a invalid inputer exception
+            System.out.println("Invalid input");
+            return;
+        }
 
-        System.out.println("What's your pet's name?");
+        //PET NAMEEE!!!
+        System.out.println("\nWhat's your pet's name?");
         String petName = scnr.nextLine();
 
         System.out.println("What's " + petName + "'s bloodType?");
-        String bloodType = scnr.nextLine();
-
-        System.out.println("What's " + petName +"'s age?");
+        String[] bloodTypes = {"O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"};
+        for (int i = 0; i < bloodTypes.length; i++) {
+            System.out.println((i + 1) + ". " + bloodTypes[i]);
+        }   
+        choice = scnr.nextInt();
+        String bloodType;
+        if(choice >= 1 && choice <= bloodTypes.length){
+            bloodType = bloodTypes[choice -1];
+        }
+        else {
+            //throw a invalid inputer exception
+            System.out.println("Invalid input");
+            return;
+        }
+        
+        //PET AGEEE
+        System.out.println("\nWhat's " + petName +"'s age? (years)");
         int petAge = scnr.nextInt();
         scnr.nextLine();
 
-        System.out.println("What color is "+ petName+ "?");
+        //PET COLORR
+        System.out.println("\nWhat color is "+ petName+ "?");
         String speciesColor = scnr.nextLine();
         
-
-        System.out.println("What's "+petName+"'s gender?");
-        String petGender = scnr.nextLine();
+        //PET GENDERRR
+        System.out.println("What's "+petName+"'s gender? (1-2)");
+        String[] genderList = {"Female","Male"};
+        for (int i = 0; i < genderList.length; i++) {
+            System.out.println((i + 1) + ". " + genderList[i]);
+        }   
+        choice = scnr.nextInt();
+        String petGender;
+        if(choice >= 1 && choice <= genderList.length){
+            petGender = genderList[choice -1];
+        }
+        else {
+            //throw a invalid inputer exception
+            System.out.println("Invalid input");
+            return;
+        }
 
         Pet pet = new Pet(petType, petName, bloodType, petAge, speciesColor, petGender);
         registeredPets.add(pet);

@@ -10,6 +10,8 @@ public class Menu {
    private List<Pet> registeredPets = new ArrayList<>();
    private List<Appointment> appointments = new ArrayList<>();
    private Owner user = null; //tracks the current user using scanner
+
+   private int count = 1;
    
    public Menu(){
       Vet generalVet = new Vet("Dr.", "M", 65, "General Expert", "Monday, Tuesday, Wednesday, Thursday", "8AM-3PM");
@@ -115,11 +117,34 @@ public class Menu {
         }
    }
 
-   //helper method, might use instead of coding it twice
-   public ArrayList<Pet> selectionFromList(){
-    
-    return null;
-    
+   //helper method for 2. Select Pet(s) and Book an Appointment") 3. Check Medical Records"
+   //Select which pets to see from the registeredPet list
+   public List<Pet> selectionFromList(){
+    List<Pet> selectionFromList = new ArrayList<Pet>();
+    count=1;
+    String choice;
+        for(Pet pet : registeredPets)
+        {
+            System.out.println(count + ". " + pet.getName() +", " + pet.getPetType() + ", " + pet.getAge() + ", "+ pet.getGender());
+            count++;
+        }
+        
+        choice = scnr.next();
+        count = 1;
+        //can throw an EXCEPTION here if the user doesn't pick a number within the range of registeredPets.size()
+        while(!choice.equals("Done")){
+            System.out.println("Enter a number to select another pet. Don't re-select");
+            System.out.println("Please type "+ " 'Done' " + "when you're done with selecting");
+            selectionFromList.add(registeredPets.get(Integer.parseInt(choice) - 1));
+            System.out.println("Here are the selected pet(s) so far: \n");
+            for(Pet pet: selectionFromList)
+            {
+                System.out.println(count + ". " + pet.getName() +", " + pet.getPetType() + ", " + pet.getAge() + ", " + pet.getGender());
+            }
+            choice = scnr.next();
+            //have selected pets enter petsToCheckRecords
+        }
+    return selectionFromList;
    }
    public void displayMedicalRecords(){
     //need to check if pet's record has been recorded before
@@ -137,31 +162,11 @@ public class Menu {
         //based on medication + appointment classes data
         //Select Pet(s) to book an appointment with
         List<Pet> petsToCheckRecords= new ArrayList<Pet>();
-        String choice;
-        System.out.println("Select which pet(s) you would like to see medical records\n");
+        //String choice;
+        System.out.println("\nSelect which pet(s) you would like to see medical records\n");
+        petsToCheckRecords = selectionFromList();
         //figure out if pet belongs to the right owner id? do we need to do this
-        int count=1;
-        for(Pet pet : registeredPets)
-        {
-            System.out.println(count + ". " + pet.getName() +", " + pet.getPetType() + ", " + pet.getAge() + ", "+ pet.getGender());
-            count++;
-        }
         
-        choice = scnr.next();
-        count = 1;
-        //can throw an EXCEPTION here if the user doesn't pick a number within the range of registeredPets.size()
-        while(!choice.equals("Done")){
-            System.out.println("Enter a number to select another pet. Don't re-select");
-            System.out.println("Please type "+ " 'Done' " + "when you're done with selecting");
-            petsToCheckRecords.add(registeredPets.get(Integer.parseInt(choice) - 1));
-            System.out.println("Here are the selected pet(s) so far: \n");
-            for(Pet pet: petsToCheckRecords)
-            {
-                System.out.println(count + ". " + pet.getName() +", " + pet.getPetType() + ", " + pet.getAge() + ", " + pet.getGender());
-            }
-            choice = scnr.next();
-            //have selected pets enter petsToCheckRecords
-        }
         System.out.println("\nDisplaying records for your selected pets!");
         for(Pet pet : petsToCheckRecords)
         {
@@ -180,7 +185,7 @@ public class Menu {
         }
 
         //forced to go back to main menu bc this isn't the last stop
-        System.out.println("1. Back to main menu");
+        System.out.println("1. Back to main menu\n");
         int ans = scnr.nextInt();
         if (ans == 1)
             displayMenu();

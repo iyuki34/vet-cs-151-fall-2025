@@ -34,6 +34,10 @@ public class Vet {
     public String getGender() {
         return gender;
     }
+    
+    public String getTitle() {
+        return title;
+    }
 
      
 

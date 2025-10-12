@@ -23,24 +23,33 @@ public class Pet{
         this.id = UUID.randomUUID().toString();
     }
 
-    public String getId(){
-        return this.id;
+    public String getPetType(){
+        return this.petType;
     }
 
     public String getName(){
         return this.name;
     }
 
-    public String getPetType(){
-        return this.petType;
+    public String getBloodType(){
+        return this.bloodType;
     }
 
     public int getAge(){
         return this.age;
     }
 
+    public String getSpeciesColor(){
+        return this.speciesColor;
+    }
+
     public String getGender(){
         return this.gender;
     }
+
+    public String getId(){
+        return this.id;
+    }
+
     
 }

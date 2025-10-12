@@ -8,6 +8,7 @@ public class Menu {
    Scanner scnr = new Scanner(System.in);
    private ArrayList<Vet> vetList = new ArrayList<>();
    private List<Pet> registeredPets = new ArrayList<>();
+   private List<Appointment> appointments = new ArrayList<>();
    private Owner user = null; //tracks the current user using scanner
    
    public Menu(){
@@ -62,8 +63,8 @@ public class Menu {
         System.out.println("1. Register a pet");
         System.out.println("2. Select Pet and Book an Appointment");
         System.out.println("3. Check Medical Records");
-        System.out.println("4. Check Pet Status");
-        System.out.println("5. Payment Checkout\n ");
+        System.out.println("4. Payment Checkout");
+        System.out.println("5. Exit Vet\n ");
 
         Scanner scnr = new Scanner(System.in);
         int option = scnr.nextInt();
@@ -112,6 +113,12 @@ public class Menu {
         }
    }
 
+   //helper method
+   public ArrayList<Pet> selectionFromList(){
+    
+    return null;
+    
+   }
    public void displayMedicalRecords(){
     //need to check if pet's record has been recorded before
     //if first time then no, if after check up then yes
@@ -127,9 +134,9 @@ public class Menu {
     else{
         //based on medication + appointment classes data
         //Select Pet(s) to book an appointment with
-        List<Pet> petsToBook = new ArrayList<Pet>();
+        List<Pet> petsToCheckRecords= new ArrayList<Pet>();
         String choice;
-        System.out.println("Select which pet(s) you would like receive care? \n");
+        System.out.println("Select which pet(s) you would like to see medical records\n");
         //figure out if pet belongs to the right owner id? do we need to do this
         int count=1;
         for(Pet pet : registeredPets)
@@ -140,26 +147,42 @@ public class Menu {
         
         choice = scnr.next();
         count = 1;
+        //can throw an EXCEPTION here if the user doesn't pick a number within the range of registeredPets.size()
         while(!choice.equals("Done")){
             System.out.println("Enter a number to select another pet. Don't re-select");
             System.out.println("Please type "+ " 'Done' " + "when you're done with selecting");
-            petsToBook.add(registeredPets.get(Integer.parseInt(choice) - 1));
+            petsToCheckRecords.add(registeredPets.get(Integer.parseInt(choice) - 1));
             System.out.println("Here are the selected pet(s) so far: \n");
-            for(Pet pet: petsToBook)
+            for(Pet pet: petsToCheckRecords)
             {
                 System.out.println(count + ". " + pet.getName() +", " + pet.getPetType() + ", " + pet.getAge() + pet.getGender());
             }
             choice = scnr.next();
             //have selected pets enter petsToBook
         }
-        count = 1;
-        System.out.println("\nHere are the pets selected for the apppointment!");
-        for(Pet pet : petsToBook)
+        System.out.println("\nDisplaying records for your selected pets!");
+        for(Pet pet : petsToCheckRecords)
         {
-            System.out.println(count + ". " + pet.getName() +", " + pet.getPetType() + ", " + pet.getAge() + pet.getGender());
-            count++;
+            System.out.println("Name: " + pet.getName() +"\nPet Type: " + pet.getPetType() + "\nAge: " + pet.getAge() + "\nGender': " +pet.getGender()
+            + "\nBlood Type: " + pet.getBloodType() + "\nColor: " + pet.getSpeciesColor() +"\n");
+            /**
+             * need appointment class to be done and the option == 2 in main menu logic flow to be done
+             * 
+             * something like this? 
+             * Purpose: print out medical records and past cost if there's any
+             * for (Appointment apt : appointments) {
+            //     if (apt.getPet().equals(p)) {
+            //         // display diagnosis, services, and costs
+            //     }
+             */
         }
 
+        System.out.println("1. Back to main menu");
+        int ans = scnr.nextInt();
+        if (ans == 1)
+            displayMenu();
+        else displayMenu();
+        
     }
 
    }
@@ -213,7 +236,7 @@ public class Menu {
         int answer = scnr.nextInt();
         //throw an exception if not int
         scnr.nextLine(); 
-        // this allows petName to be read because for some reason a nextLine() right after
+        // scnr.nextLine() allows petName to be read because for some reason a nextLine() right after
         //a nextInt() takes in the "Enter" and our petName can't be read;
         if(answer == 1)
             petType = "Dog";

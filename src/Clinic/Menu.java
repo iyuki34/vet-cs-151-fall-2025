@@ -238,7 +238,7 @@ public class Menu {
     } 
 
     public void displayPetMenu(){
-        //PET TYPE!!!
+        //PET TYPE
         String petType = null;
         System.out.println("===Pet Resgistration===");
         System.out.println("\nNow we would like to ask, register your pet.");
@@ -261,7 +261,7 @@ public class Menu {
             return;
         }
 
-        //PET NAMEEE!!!
+        //PET NAME
         System.out.println("\nWhat's your pet's name?");
         String petName = scnr.nextLine();
 
@@ -281,16 +281,16 @@ public class Menu {
             return;
         }
         
-        //PET AGEEE
+        //PET AGE
         System.out.println("\nWhat's " + petName +"'s age? (years)");
         int petAge = scnr.nextInt();
         scnr.nextLine();
 
-        //PET COLORR
+        //PET COLOR
         System.out.println("\nWhat color is "+ petName+ "?");
         String speciesColor = scnr.nextLine();
         
-        //PET GENDERRR
+        //PET GENDER
         System.out.println("\nWhat's "+petName+"'s gender? (1-2)");
         String[] genderList = {"Female","Male"};
         for (int i = 0; i < genderList.length; i++) {
@@ -312,4 +312,16 @@ public class Menu {
 
         displayMenu();
     }
+    private void bookAppointment(){
+        // TODO 1: pick vet from vetList
+        // TODO 2: pick date and time
+        // TODO 3: pick pet from registeredPets
+        // TODO 4: choose slots
+        // TODO 4: create appointment 
+        // TODO 5: book the appointment
+
+        //BookingHelper bh = new BookingHelper();
+        //bh.book();
+    }
+
 }

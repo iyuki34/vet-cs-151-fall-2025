@@ -26,5 +26,21 @@ public class Pet{
     public String getId(){
         return this.id;
     }
+
+    public String getName(){
+        return this.name;
+    }
+
+    public String getPetType(){
+        return this.petType;
+    }
+
+    public int getAge(){
+        return this.age;
+    }
+
+    public String getGender(){
+        return this.gender;
+    }
     
 }

@@ -1,5 +1,8 @@
 package Clinic;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,6 +12,7 @@ public class Menu {
    private ArrayList<Vet> vetList = new ArrayList<>();
    private List<Pet> registeredPets = new ArrayList<>();
    private List<Appointment> appointments = new ArrayList<>();
+   private BookingHelper bookingHelper = new BookingHelper(); // <-- Add this
    private Owner user = null; //tracks the current user using scanner
 
    private int count = 1;
@@ -61,12 +65,15 @@ public class Menu {
    //Check Pet Status
    //Payment plan
    public void displayMenu(){
+
+    boolean running = true;
+    while (running) {
         System.out.println("===Main Menu===");
         System.out.println("What would you like to do today?");
         System.out.println("1. Register a pet");
-        System.out.println("2. Select Pet(s) and Book an Appointment");
+        System.out.println("2. Display Veterinarians");
         System.out.println("3. Check Medical Records");
-        System.out.println("4. Payment Checkout");
+        System.out.println("4. Select your pet and Book an appointment");
         System.out.println("5. Exit Vet\n ");
 
         Scanner scnr = new Scanner(System.in);
@@ -110,11 +117,14 @@ public class Menu {
         }
         if (option == 4){
             //calls appointment class
+            bookAppointment();
         }
         if (option == 5){
             System.out.println("Thank you for visiting our Hospital and we hope you enjoyed your visit");
             scnr.close();
+            running = false; 
         }
+      }
    }
 
    //helper method for 2. Select Pet(s) and Book an Appointment") 3. Check Medical Records"
@@ -155,7 +165,7 @@ public class Menu {
         System.out.println("1. Back to main menu");
         int ans = scnr.nextInt();
         if (ans == 1)
-            displayMenu();
+            return;
         // else throw an exception and return back to this message and try re-entering #1 to go back to main menu
     }
     else{
@@ -186,11 +196,7 @@ public class Menu {
 
         //forced to go back to main menu bc this isn't the last stop
         System.out.println("1. Back to main menu\n");
-        int ans = scnr.nextInt();
-        if (ans == 1)
-            displayMenu();
-        else displayMenu();
-        
+        return;  
     }
 
    }
@@ -310,7 +316,7 @@ public class Menu {
         Pet pet = new Pet(petType, petName, bloodType, petAge, speciesColor, petGender);
         registeredPets.add(pet);
 
-        displayMenu();
+        return;
     }
     private void bookAppointment(){
         // TODO 1: pick vet from vetList
@@ -320,8 +326,62 @@ public class Menu {
         // TODO 4: create appointment 
         // TODO 5: book the appointment
 
-        //BookingHelper bh = new BookingHelper();
-        //bh.book();
+        if (registeredPets.isEmpty()) {
+            System.out.println("No registered pets. Please register a pet first.");
+            return;
+        }
+
+        // 1. Select a pet
+        System.out.println("Select a pet to book for:");
+        for (int i = 0; i < registeredPets.size(); i++) {
+            Pet p = registeredPets.get(i);
+            System.out.printf("%d) %s (%s, %d years)\n", i + 1, p.getName(), p.getPetType(), p.getAge());
+        }
+        int petChoice = scnr.nextInt();
+        Pet chosenPet = registeredPets.get(petChoice - 1);
+
+        // 2. Select a vet
+        System.out.println("Select a vet:");
+        for (int i = 0; i < vetList.size(); i++) {
+            Vet v = vetList.get(i);
+            System.out.printf("%d) %s - %s - %s\n", i + 1, v.getName(), v.getTitle(), v.getAvailableDays());
+        }
+        int vetChoice = scnr.nextInt();
+        Vet chosenVet = vetList.get(vetChoice - 1);
+
+        // 3. Choose a date (simplified: pick today)
+        LocalDate date = LocalDate.now();
+
+        // 4. Choose a time (hardcoded slots)
+        List<LocalTime> slots = List.of(
+            LocalTime.of(9, 0),
+            LocalTime.of(10, 0),
+            LocalTime.of(11, 0),
+            LocalTime.of(13, 0),
+            LocalTime.of(14, 0)
+        );
+        // TODO: link the slots to the vet's actual availability
+        System.out.println("Available slots:");
+        for (int i = 0; i < slots.size(); i++) {
+            LocalDateTime dt = LocalDateTime.of(date, slots.get(i));
+            String status = bookingHelper.isSlotFree(chosenVet, dt) ? "free" : "booked";
+            System.out.printf("%d) %s [%s]\n", i + 1, slots.get(i), status);
+        }
+
+        int slotChoice = scnr.nextInt();
+        LocalDateTime when = LocalDateTime.of(date, slots.get(slotChoice - 1));
+
+        // 5. Book
+        AppointmentV2 appt = new AppointmentV2(chosenVet, user, chosenPet, when);
+        if (bookingHelper.book(appt)) {
+            System.out.println("Appointment booked successfully!");
+        } else {
+            System.out.println("Sorry, this slot is already taken.");
+        }
+        // 6. Show details of the booked appointment
+        System.out.println("Appointment details:\n" + appt.toString());
+        return;
     }
+
 
 }

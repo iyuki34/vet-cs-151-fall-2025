@@ -1,8 +1,8 @@
 package Clinic;
+
 import java.util.UUID;
 
-
-public class Pet{
+public abstract class Pet{
     // Attributes
     private String petType;
     private String name;
@@ -50,6 +50,4 @@ public class Pet{
     public String getId(){
         return this.id;
     }
-
-    
 }

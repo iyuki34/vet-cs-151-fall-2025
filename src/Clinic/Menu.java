@@ -14,15 +14,17 @@ public class Menu {
    private List<AppointmentV2> appointments = new ArrayList<>();
    private BookingHelper bookingHelper = new BookingHelper(); // <-- Add this
    private Owner user = null; //tracks the current user using scanner
+   private PaymentMethod method;
 
    private int count = 1;
+   private double totalCost;
    
    public Menu(){
-      Vet generalVet = new Vet("Dr.", "M", 65, "General Expert", "Monday, Tuesday, Wednesday, Thursday", "8AM-3PM");
+      Vet generalVet = new Vet("Dr. Ethan Hayes", "M", 65, "General Expert", "Monday, Tuesday, Wednesday, Thursday", "8AM-3PM");
       Vet catVet = new Vet("Dr.", "F", 32, "Cat Expert", "Monday, Thursday, Saturday", "12PM-5PM");
-      Vet dogVet = new Vet("Dr.", "M", 35, "Dog Expert", "Sunday, Tuesday, Thuesday, Saturday", "12PM-5PM");
-      Vet birdVet = new Vet("Dr.", "F", 28, "Bird Expert","Monday, Tuesday, Friday", "1PM-6PM");
-      Vet reptileVet = new Vet("Dr.", "F", 25,"Reptile Expert","Friday, Tuesday", "1PM-8PM");
+      Vet dogVet = new Vet("Dr. Marcus Liu", "M", 35, "Dog Expert", "Sunday, Tuesday, Thuesday, Saturday", "12PM-5PM");
+      Vet birdVet = new Vet("Dr. Emily Carter", "F", 28, "Bird Expert","Monday, Tuesday, Friday", "1PM-6PM");
+      Vet reptileVet = new Vet("Dr. Natalie Nguyen Sophia Patel", "F", 25,"Reptile Expert","Friday, Tuesday", "1PM-8PM");
 
       vetList.add(generalVet);
       vetList.add(dogVet);
@@ -78,7 +80,8 @@ public class Menu {
         System.out.println("2. Display Veterinarians");
         System.out.println("3. Check Medical Records");
         System.out.println("4. Select your pet and Book an appointment");
-        System.out.println("5. Exit Vet\n ");
+         System.out.println("5. Pay total");
+        System.out.println("6. Exit Vet\n ");
 
         int option = readIntExit();;
 
@@ -123,7 +126,10 @@ public class Menu {
             bookAppointment();
         }
         if (option == 5){
-            System.out.println("Thank you for visiting our Hospital and we hope you enjoyed your visit");
+            displayPaymentMethod();
+        }
+        if (option == 6){
+          System.out.println("Thank you for visiting our Hospital and we hope you enjoyed your visit");
             quit();
         }
       }
@@ -232,6 +238,10 @@ public class Menu {
                 displayMenu();
             }
             if (result == 2){
+               if (page == 5){
+                  System.out.println("We are at the last page.");
+                  continue;
+               }
                 index++;
                 page++;
             }
@@ -457,5 +467,54 @@ public class Menu {
 
         LocalDateTime appointmentDateTime = LocalDateTime.of(LocalDate.now(), timeChoice);
         System.out.println(appointmentDateTime);
+    }
+
+    public void displayPaymentMethod(){
+      if (appointments.size() == 0){
+         System.out.println("You have no appointments. Go back to menu.");
+         return;
+      }
+      boolean hasInsurance = false; 
+      System.out.println("Great, you have decided to pay!");
+      System.out.println("Do you have insurance?");
+      System.out.println("1. Yes");
+      System.out.println("2. No");
+
+      int input2 = readIntExit();
+
+      if (input2 == 1){
+         hasInsurance = true;
+      }
+      
+      System.out.println("What type of format would you like to pay?");
+      System.out.println("1. Cash");
+      System.out.println("2. Card");
+
+      int input = readIntExit();
+
+      if (input == 1){
+         method = new PaymentMethod("CASH", hasInsurance);
+      }
+      else if (input == 2){
+         method = new PaymentMethod("CARD", hasInsurance);
+      }
+      else{
+         System.out.println("Invalid choice. Defaulting cash.");
+         method = new PaymentMethod("CASH", hasInsurance);
+
+      }
+
+
+      System.out.println("Your total cost will be " + totalCost + ". Is that okay?");
+      System.out.println("1. Yes");
+      System.out.println("2. No");
+
+      int confirm = readIntExit();
+        if (confirm == 1) {
+            System.out.println("Payment confirmed! Thank you for your business.");
+        } else {
+            System.out.println("Payment canceled.");
+        }
+
     }
 }

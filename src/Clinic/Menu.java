@@ -22,11 +22,11 @@ public class Menu {
    private int count = 1;
    
    public Menu(){
-      Vet generalVet = new Vet("Dr.A", "M", 65, "General Expert", "Monday, Tuesday, Wednesday, Thursday", "8AM-3PM");
-      Vet catVet = new Vet("Dr.B", "F", 32, "Cat Expert", "Monday, Thursday, Saturday", "12PM-5PM");
-      Vet dogVet = new Vet("Dr.C", "M", 35, "Dog Expert", "Sunday, Tuesday, Thuesday, Saturday", "12PM-5PM");
-      Vet birdVet = new Vet("Dr.D", "F", 28, "Bird Expert","Monday, Tuesday, Friday", "1PM-6PM");
-      Vet reptileVet = new Vet("Dr.E", "F", 25,"Reptile Expert","Friday, Tuesday", "1PM-8PM");
+      Vet generalVet = new Vet("Dr. Ethan Hayes", "M", 65, "General Expert", "Monday, Tuesday, Wednesday, Thursday", "8AM-3PM");
+      Vet catVet = new Vet("Dr.", "F", 32, "Cat Expert", "Monday, Thursday, Saturday", "12PM-5PM");
+      Vet dogVet = new Vet("Dr. Marcus Liu", "M", 35, "Dog Expert", "Sunday, Tuesday, Thuesday, Saturday", "12PM-5PM");
+      Vet birdVet = new Vet("Dr. Emily Carter", "F", 28, "Bird Expert","Monday, Tuesday, Friday", "1PM-6PM");
+      Vet reptileVet = new Vet("Dr. Natalie Nguyen Sophia Patel", "F", 25,"Reptile Expert","Friday, Tuesday", "1PM-8PM");
 
       vetList.add(generalVet);
       vetList.add(dogVet);

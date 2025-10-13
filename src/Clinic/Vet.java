@@ -31,6 +31,11 @@ public class Vet {
         return availableDays;
     }
 
+    
+    public String getAvailableHour() {
+        return availableHour;
+    }
+
     public String getGender() {
         return gender;
     }

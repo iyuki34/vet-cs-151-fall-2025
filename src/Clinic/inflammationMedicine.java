@@ -23,5 +23,11 @@ public class inflammationMedicine extends Medication implements Service{
         return "Inflammation Medicine to help with burning sensations and ripped tissues";
     }
 
+    @Override
+    public int refillOrder() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'refillOrder'");
+    }
+
 
 }

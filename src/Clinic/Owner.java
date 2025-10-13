@@ -13,7 +13,7 @@ public class Owner{
     private int age;
     private String id;
 
-    protected ArrayList<String> pet = new ArrayList<>();
+    protected ArrayList<Pet> pet = new ArrayList<>();
 
     HashMap<String, ArrayList<String> > list = new HashMap<>();
 
@@ -63,6 +63,12 @@ public class Owner{
     }
     public void setAge(int age){
         this.age = age;
+    }
+    
+    public void addPet(Pet p){
+        if (p != null && !pet.contains(p)){
+            pet.add(p);
+        }
     }
 }
 

@@ -11,6 +11,8 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.util.Set;
 
+import Clinic.Exceptions.InvalidMenuChoiceException;
+
 public class Menu {
    Scanner scnr = new Scanner(System.in);
    private ArrayList<Vet> vetList = new ArrayList<>();
@@ -18,8 +20,10 @@ public class Menu {
    private List<AppointmentV2> appointments = new ArrayList<>();
    private BookingHelper bookingHelper = new BookingHelper(); // <-- Add this
    private Owner user = null; //tracks the current user using scanner
+   private PaymentMethod method;
 
    private int count = 1;
+   private double totalCost;
    
    public Menu(){
       Vet generalVet = new Vet("Dr. Ethan Hayes", "M", 65, "General Expert", "Monday, Tuesday, Wednesday, Thursday", "8AM-3PM");
@@ -82,7 +86,8 @@ public class Menu {
         System.out.println("2. Display Veterinarians");
         System.out.println("3. Check Medical Records");
         System.out.println("4. Select your pet and Book an appointment");
-        System.out.println("5. Exit Vet\n ");
+         System.out.println("5. Pay total");
+        System.out.println("6. Exit Vet\n ");
 
         int option = readIntExit();;
 
@@ -100,6 +105,9 @@ public class Menu {
                 else if(ans == 2)
                     displayMenu();
                 //else throw an exception error;
+                else{
+                  throw new InvalidMenuChoiceException("Invalid option");
+                }
 
        } else {
             System.out.println("\nYou currently have no pets registered.");
@@ -112,6 +120,9 @@ public class Menu {
             else if(ans == 2)
                     displayMenu();
             //else throw an exception error;
+            else{
+                  throw new InvalidMenuChoiceException("Invalid option");
+                }
        }
         }
         if (option == 2){
@@ -127,7 +138,10 @@ public class Menu {
             bookAppointment();
         }
         if (option == 5){
-            System.out.println("Thank you for visiting our Hospital and we hope you enjoyed your visit");
+            displayPaymentMethod();
+        }
+        if (option == 6){
+          System.out.println("Thank you for visiting our Hospital and we hope you enjoyed your visit");
             quit();
         }
       }
@@ -173,6 +187,9 @@ public class Menu {
         if (ans == 1)
             return;
         // else throw an exception and return back to this message and try re-entering #1 to go back to main menu
+        else{
+                  throw new InvalidMenuChoiceException("Invalid option");
+                }
     }
     else{
         //based on medication + appointment classes data
@@ -236,6 +253,10 @@ public class Menu {
                 displayMenu();
             }
             if (result == 2){
+               if (page == 5){
+                  System.out.println("We are at the last page.");
+                  continue;
+               }
                 index++;
                 page++;
             }
@@ -266,11 +287,9 @@ public class Menu {
         if(choice >= 1 && choice <= typeList.length){
             petType = typeList[choice -1];
         }
-        else {
-            //throw a invalid inputer exception
-            System.out.println("Invalid input");
-            return;
-        }
+        else{
+                  throw new InvalidMenuChoiceException("Invalid option");
+         }
 
         //PET NAME
         System.out.println("\nWhat's your pet's name?");
@@ -286,11 +305,10 @@ public class Menu {
         if(choice >= 1 && choice <= bloodTypes.length){
             bloodType = bloodTypes[choice -1];
         }
-        else {
-            //throw a invalid inputer exception
-            System.out.println("Invalid input");
-            return;
-        }
+        else{
+                  throw new InvalidMenuChoiceException("Invalid option");
+                  return;
+                }
         
         //PET AGE
         System.out.println("\nWhat's " + petName +"'s age? (years)");
@@ -312,11 +330,9 @@ public class Menu {
         if(choice >= 1 && choice <= genderList.length){
             petGender = genderList[choice -1];
         }
-        else {
-            //throw a invalid inputer exception
-            System.out.println("Invalid input");
-            return;
-        }
+        else{
+                  throw new InvalidMenuChoiceException("Invalid option");
+                }
 
         Pet pet = new Pet(petType, petName, bloodType, petAge, speciesColor, petGender);
         registeredPets.add(pet);
@@ -387,7 +403,8 @@ public class Menu {
         if (bookingHelper.book(appt)) {
             System.out.println("Appointment booked successfully!");
         } else {
-            System.out.println("Sorry, this slot is already taken.");
+            throw new BookingConflictException("Sorry, this slot is already taken."):
+
         }
         // 6. Show details of the booked appointment
         System.out.println("Appointment details:\n" + appt.toString());
@@ -467,5 +484,54 @@ public class Menu {
 
         LocalDateTime appointmentDateTime = LocalDateTime.of(LocalDate.now(), timeChoice);
         System.out.println(appointmentDateTime);
+    }
+
+    public void displayPaymentMethod(){
+      if (appointments.size() == 0){
+         System.out.println("You have no appointments. Go back to menu.");
+         return;
+      }
+      boolean hasInsurance = false; 
+      System.out.println("Great, you have decided to pay!");
+      System.out.println("Do you have insurance?");
+      System.out.println("1. Yes");
+      System.out.println("2. No");
+
+      int input2 = readIntExit();
+
+      if (input2 == 1){
+         hasInsurance = true;
+      }
+      
+      System.out.println("What type of format would you like to pay?");
+      System.out.println("1. Cash");
+      System.out.println("2. Card");
+
+      int input = readIntExit();
+
+      if (input == 1){
+         method = new PaymentMethod("CASH", hasInsurance);
+      }
+      else if (input == 2){
+         method = new PaymentMethod("CARD", hasInsurance);
+      }
+      else{
+         System.out.println("Invalid choice. Defaulting cash.");
+         method = new PaymentMethod("CASH", hasInsurance);
+
+      }
+
+
+      System.out.println("Your total cost will be " + totalCost + ". Is that okay?");
+      System.out.println("1. Yes");
+      System.out.println("2. No");
+
+      int confirm = readIntExit();
+        if (confirm == 1) {
+            System.out.println("Payment confirmed! Thank you for your business.");
+        } else {
+            System.out.println("Payment canceled.");
+        }
+
     }
 }

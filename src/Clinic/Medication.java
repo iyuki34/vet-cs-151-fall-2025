@@ -1,13 +1,15 @@
 package Clinic;
 
+import Clinic.Exceptions.CapacityExceededException;
+
 public abstract class Medication implements Service{
     /** There's no reason to re-modify the medication names and price */
     private final String medicationName;
     private final double price;
-    private int numDosesInStock = 10;
+    private int numDosesInStock;
     //private refilldate;
     public abstract String toHeal();
-    public abstract int refillOrder();
+    public abstract void refillOrder();
 
     public Medication(String medicationName, double price, int numDosesInStock) {
         this.medicationName = medicationName;
@@ -16,6 +18,9 @@ public abstract class Medication implements Service{
         //this.expirationDate; // get from appointment
     }
     
+    protected void setStock(int numDosesInStock){
+        this.numDosesInStock = numDosesInStock;
+    }
     protected int getStock(){
         return numDosesInStock;
     }

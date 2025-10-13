@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import Clinic.Exceptions.InvalidMenuChoiceException;
+
 public class Menu {
    Scanner scnr = new Scanner(System.in);
    private ArrayList<Vet> vetList = new ArrayList<>();
@@ -99,6 +101,9 @@ public class Menu {
                 else if(ans == 2)
                     displayMenu();
                 //else throw an exception error;
+                else{
+                  throw new InvalidMenuChoiceException("Invalid option");
+                }
 
        } else {
             System.out.println("\nYou currently have no pets registered.");
@@ -111,6 +116,9 @@ public class Menu {
             else if(ans == 2)
                     displayMenu();
             //else throw an exception error;
+            else{
+                  throw new InvalidMenuChoiceException("Invalid option");
+                }
        }
         }
         if (option == 2){
@@ -175,6 +183,9 @@ public class Menu {
         if (ans == 1)
             return;
         // else throw an exception and return back to this message and try re-entering #1 to go back to main menu
+        else{
+                  throw new InvalidMenuChoiceException("Invalid option");
+                }
     }
     else{
         //based on medication + appointment classes data
@@ -272,11 +283,9 @@ public class Menu {
         if(choice >= 1 && choice <= typeList.length){
             petType = typeList[choice -1];
         }
-        else {
-            //throw a invalid inputer exception
-            System.out.println("Invalid input");
-            return;
-        }
+        else{
+                  throw new InvalidMenuChoiceException("Invalid option");
+         }
 
         //PET NAME
         System.out.println("\nWhat's your pet's name?");
@@ -292,11 +301,10 @@ public class Menu {
         if(choice >= 1 && choice <= bloodTypes.length){
             bloodType = bloodTypes[choice -1];
         }
-        else {
-            //throw a invalid inputer exception
-            System.out.println("Invalid input");
-            return;
-        }
+        else{
+                  throw new InvalidMenuChoiceException("Invalid option");
+                  return;
+                }
         
         //PET AGE
         System.out.println("\nWhat's " + petName +"'s age? (years)");
@@ -318,11 +326,9 @@ public class Menu {
         if(choice >= 1 && choice <= genderList.length){
             petGender = genderList[choice -1];
         }
-        else {
-            //throw a invalid inputer exception
-            System.out.println("Invalid input");
-            return;
-        }
+        else{
+                  throw new InvalidMenuChoiceException("Invalid option");
+                }
 
         Pet pet = new Pet(petType, petName, bloodType, petAge, speciesColor, petGender);
         registeredPets.add(pet);
@@ -387,7 +393,8 @@ public class Menu {
         if (bookingHelper.book(appt)) {
             System.out.println("Appointment booked successfully!");
         } else {
-            System.out.println("Sorry, this slot is already taken.");
+            throw new BookingConflictException("Sorry, this slot is already taken."):
+
         }
         // 6. Show details of the booked appointment
         System.out.println("Appointment details:\n" + appt.toString());

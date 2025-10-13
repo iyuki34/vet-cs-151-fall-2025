@@ -87,8 +87,9 @@ public class Menu {
         System.out.println("2. Display Veterinarians");
         System.out.println("3. Check Medical Records");
         System.out.println("4. Select your pet and Book an appointment");
-         System.out.println("5. Pay total");
-        System.out.println("6. Exit Vet\n ");
+         System.out.println("5. Go to appointment");
+         System.out.println("6. Pay total");
+        System.out.println("7. Exit Vet\n ");
 
         int option = readIntExit();;
 
@@ -139,9 +140,12 @@ public class Menu {
             bookAppointment();
         }
         if (option == 5){
-            displayPaymentMethod();
+         displayAppointment();
         }
         if (option == 6){
+            displayPaymentMethod();
+        }
+        if (option == 7){
           System.out.println("Thank you for visiting our Hospital and we hope you enjoyed your visit");
             quit();
         }
@@ -485,22 +489,12 @@ public class Menu {
     }
 
     public void displayPaymentMethod(){
-      if (bookings.size() == 0){
+      if (bookingHelper.allBookings().isEmpty()){
          System.out.println("You have no appointments. Go back to menu.");
          return;
       }
-      boolean hasInsurance = false; 
       System.out.println("Great, you have decided to pay!");
-      System.out.println("Do you have insurance?");
-      System.out.println("1. Yes");
-      System.out.println("2. No");
 
-      int input2 = readIntExit();
-
-      if (input2 == 1){
-         hasInsurance = true;
-      }
-      
       System.out.println("What type of format would you like to pay?");
       System.out.println("1. Cash");
       System.out.println("2. Card");
@@ -534,7 +528,7 @@ public class Menu {
     }
 
     void displayAppointment(){
-      if (bookings.size() == 0){
+      if (bookingHelper.allBookings().isEmpty()){
          System.out.println("You have no appointments. Go back to menu.");
          return;
       }

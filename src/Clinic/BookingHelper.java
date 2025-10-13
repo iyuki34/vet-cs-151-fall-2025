@@ -11,7 +11,7 @@ import java.util.*;
  *  - list / cancel appointments
  */
 public class BookingHelper {
-    private final List<AppointmentV2> bookings = new ArrayList<>();
+    public final List<AppointmentV2> bookings = new ArrayList<>();
 
     // check if a specific datetime is free for this vet
     public boolean isSlotFree(Vet vet, LocalDateTime dateTime) {

@@ -282,7 +282,6 @@ public class Menu {
         } 
         int choice = readIntExit(); 
         //throw an exception if not int
-        scnr.nextLine(); 
         // scnr.nextLine() allows petName to be read because for some reason a nextLine() right after
         //a nextInt() takes in the "Enter" and our petName can't be read;
         if(choice >= 1 && choice <= typeList.length){
@@ -308,13 +307,11 @@ public class Menu {
         }
         else{
                   throw new InvalidMenuChoiceException("Invalid option");
-                  return;
                 }
         
         //PET AGE
         System.out.println("\nWhat's " + petName +"'s age? (years)");
         int petAge = readIntExit();;
-        scnr.nextLine();
 
         //PET COLOR
         System.out.println("\nWhat color is "+ petName+ "?");
@@ -404,7 +401,7 @@ public class Menu {
         if (bookingHelper.book(appt)) {
             System.out.println("Appointment booked successfully!");
         } else {
-            throw new BookingConflictException("Sorry, this slot is already taken."):
+            throw new BookingConflictException("Sorry, this slot is already taken.");
 
         }
         // 6. Show details of the booked appointment

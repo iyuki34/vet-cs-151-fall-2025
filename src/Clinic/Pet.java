@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import Clinic.Exceptions.CapacityExceededException;
 
-public abstract class Pet{
+public class Pet{
     // Attributes
     private String petType;
     private String name;

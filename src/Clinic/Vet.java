@@ -3,12 +3,12 @@ package Clinic;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class Vet {
-    public String name;
-    public String gender;
-    public int age;
-    public String title;
-    public String availableDays;
-    public String availableHour;
+    private String name;
+    private String gender;
+    private int age;
+    private String title;
+    private String availableDays;
+    private String availableHour;
     
     public Vet(String name, String gender, int age, String title, String availableDays, String availibleHour){
         this.name = name;

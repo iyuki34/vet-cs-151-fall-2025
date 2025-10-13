@@ -3,6 +3,8 @@ package Clinic;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
+
+import Clinic.Exceptions.CapacityExceededException;
 // Pet's owner
 public class Owner{
     // Attributes 
@@ -12,13 +14,20 @@ public class Owner{
     private String address;
     private int age;
     private String id;
+    private int ownerInstances = 0;
 
     protected ArrayList<Pet> pet = new ArrayList<>();
 
     HashMap<String, ArrayList<String> > list = new HashMap<>();
 
+    
+
     // Constructor 
     public Owner(String name, String phoneNumber, String email, String address, int age){
+        ownerInstances++;
+        if (ownerInstances == 100){
+            throw new CapacityExceededException("Too many Owner Instances");
+        }
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;

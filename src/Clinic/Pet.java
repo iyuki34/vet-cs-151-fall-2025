@@ -2,6 +2,8 @@ package Clinic;
 
 import java.util.UUID;
 
+import Clinic.Exceptions.CapacityExceededException;
+
 public abstract class Pet{
     // Attributes
     private String petType;
@@ -11,9 +13,14 @@ public abstract class Pet{
     private String speciesColor;
     private String gender;
     private String id;
+    private int petInstances = 0;
 
     // Constructor
     public Pet(String petType, String name, String bloodType, int age, String speciesColor, String gender){
+        petInstances++;
+        if (petInstances == 100){
+            throw new CapacityExceededException("Too many Pet Instances");
+        }
         this.petType = petType;
         this.name = name;
         this.bloodType = bloodType;

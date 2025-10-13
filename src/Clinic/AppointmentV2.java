@@ -3,13 +3,20 @@ package Clinic;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import Clinic.Exceptions.CapacityExceededException;
+
 public class AppointmentV2 {
     private final Vet vet;
     private final Owner owner;
     private final Pet pet;
     private final LocalDateTime when;
+    private int apptInstances = 0;
 
     public AppointmentV2(Vet vet, Owner owner, Pet pet, LocalDateTime when) {
+        apptInstances++;
+        if (apptInstances == 100){
+            throw new CapacityExceededException("Too many Appointment Instances");
+        }
         this.vet = vet;
         this.owner = owner;
         this.pet = pet;

@@ -2,10 +2,9 @@ package Clinic;
 
 public class inflammationMedicine extends Medication implements Service{
     /** There's no reason to re-modify the medication names and price */
-    private final double insuranceRate = .75; 
     
     public inflammationMedicine() {
-        super("Anti-Inflammatory Cream", 100.00,1); 
+        super("Anti-Inflammatory Cream", 100.00,10); 
     }
 
     @Override
@@ -16,9 +15,6 @@ public class inflammationMedicine extends Medication implements Service{
     //still need to consider insurance. or maybe do insurance after the final cost
     @Override
     public double getCost(){
-        if (hasInsurance() == true){
-            return getPrice() * insuranceRate;
-        }
         return getPrice();
     }
 

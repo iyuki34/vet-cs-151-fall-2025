@@ -485,7 +485,7 @@ public class Menu {
     }
 
     public void displayPaymentMethod(){
-      if (appointments.size() == 0){
+      if (bookings.size() == 0){
          System.out.println("You have no appointments. Go back to menu.");
          return;
       }
@@ -508,14 +508,14 @@ public class Menu {
       int input = readIntExit();
 
       if (input == 1){
-         method = new PaymentMethod("CASH", hasInsurance);
+         method = new PaymentMethod("CASH");
       }
       else if (input == 2){
-         method = new PaymentMethod("CARD", hasInsurance);
+         method = new PaymentMethod("CARD");
       }
       else{
          System.out.println("Invalid choice. Defaulting cash.");
-         method = new PaymentMethod("CASH", hasInsurance);
+         method = new PaymentMethod("CASH");
 
       }
 
@@ -532,4 +532,34 @@ public class Menu {
         }
 
     }
+
+    void displayAppointment(){
+      if (bookings.size() == 0){
+         System.out.println("You have no appointments. Go back to menu.");
+         return;
+      }
+      System.out.println("It's time for the appointment.");
+      System.out.println("We will checkup on your pet.");
+      int result = (int)(Math.random() * 3);
+
+      if (result == 0) {
+        System.out.println("Your pet is perfectly fine! No medicine needed.");
+        return;
+    } else if (result == 1) {
+         System.out.println("Your pet has inflammation. Prescribing inflammation medicine.");
+         inflammationMedicine inflameMed = new inflammationMedicine();
+
+         double cost = inflameMed.getCost();
+         totalCost += cost;
+         inflameMed.useOneDose();
+         System.out.println("Added to total amount");
+    } else {
+        System.out.println("Your pet has coughing symptoms. Prescribing coughing medicine.");
+        coughingMedicine coughMedicine = new coughingMedicine();
+        double cost = coughMedicine.getCost();
+        totalCost += cost;
+        coughMedicine.useOneDose();
+         System.out.println("Added to total amount");
+    }
+   }
 }

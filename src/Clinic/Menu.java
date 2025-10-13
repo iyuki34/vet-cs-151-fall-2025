@@ -11,7 +11,7 @@ public class Menu {
    Scanner scnr = new Scanner(System.in);
    private ArrayList<Vet> vetList = new ArrayList<>();
    private List<Pet> registeredPets = new ArrayList<>();
-   private List<Appointment> appointments = new ArrayList<>();
+   private List<AppointmentV2> appointments = new ArrayList<>();
    private BookingHelper bookingHelper = new BookingHelper(); // <-- Add this
    private Owner user = null; //tracks the current user using scanner
 
@@ -36,21 +36,25 @@ public class Menu {
    public void introMenu(){
       System.out.println("Welcome to Pet Wellness Clinic. We welcome you with open arms!");
         System.out.println("Now we would like to ask for your name.");
-        String name = scnr.nextLine();
+        String name = readStringExit();
 
         System.out.println("Great, lovely to meet you " + name + "! We would like a little bit more info before we proceed.");
 
         System.out.println("What number would we be able to contact you?");
-        String number = scnr.nextLine();
+        String number = readStringExit();
 
         System.out.println("Perfect. Whats your email address to send you updates via email?");
-        String email = scnr.nextLine();
+        String email = readStringExit();
 
         System.out.println("What address could we send mail to?");
-        String address = scnr.nextLine();
+        String address = readStringExit();
 
         System.out.println("Final question. How old are you?");
-        int age = scnr.nextInt();
+        
+        int age = readIntExit();
+        if (age < 18){
+            throw new IllegalArgumentException ("You are not an adult, you can't register on the vet");
+        }
         //throw exception if not int
 
         user = new Owner(name,number,address,email,age);
@@ -76,8 +80,7 @@ public class Menu {
         System.out.println("4. Select your pet and Book an appointment");
         System.out.println("5. Exit Vet\n ");
 
-        Scanner scnr = new Scanner(System.in);
-        int option = scnr.nextInt();
+        int option = readIntExit();;
 
         if (option == 1){
             //Register a pet 
@@ -87,7 +90,7 @@ public class Menu {
                 System.out.println("Would you like to register another pet?");
                 System.out.println("1. Register a pet");
                 System.out.println("2. Back to main menu\n");
-                int ans = scnr.nextInt();
+                int ans = readIntExit();;
                 if (ans == 1)
                     displayPetMenu();
                 else if(ans == 2)
@@ -99,7 +102,7 @@ public class Menu {
             System.out.println("Would you like to register a pet?");
             System.out.println("1. Register a pet");
             System.out.println("2. Back to main menu\n");
-            int ans = scnr.nextInt();
+            int ans = readIntExit();;
             if (ans == 1)
                     displayPetMenu();
             else if(ans == 2)
@@ -121,8 +124,7 @@ public class Menu {
         }
         if (option == 5){
             System.out.println("Thank you for visiting our Hospital and we hope you enjoyed your visit");
-            scnr.close();
-            running = false; 
+            quit();
         }
       }
    }
@@ -139,7 +141,7 @@ public class Menu {
             count++;
         }
         
-        choice = scnr.next();
+        choice = readStringExit();
         count = 1;
         //can throw an EXCEPTION here if the user doesn't pick a number within the range of registeredPets.size()
         while(!choice.equals("Done")){
@@ -151,7 +153,7 @@ public class Menu {
             {
                 System.out.println(count + ". " + pet.getName() +", " + pet.getPetType() + ", " + pet.getAge() + ", " + pet.getGender());
             }
-            choice = scnr.next();
+            choice = readStringExit();
             //have selected pets enter petsToCheckRecords
         }
     return selectionFromList;
@@ -163,7 +165,7 @@ public class Menu {
     if(registeredPets.size() == 0){
         System.out.println("You have no registered pet(s), please go back to the main menu");
         System.out.println("1. Back to main menu");
-        int ans = scnr.nextInt();
+        int ans = readIntExit();
         if (ans == 1)
             return;
         // else throw an exception and return back to this message and try re-entering #1 to go back to main menu
@@ -202,7 +204,6 @@ public class Menu {
    }
 
    public void displayVetenarians(){
-        Scanner scnr = new Scanner(System.in);
         System.out.println("===All Vetenarians===");
         int page = 1;
         int index = 0;
@@ -224,7 +225,7 @@ public class Menu {
                 System.out.println("3. Previous page (" + page + "/5)");
             }
 
-            int result = scnr.nextInt();
+            int result = readIntExit();
 
             if (result == 1){
                 //return to main menu
@@ -253,7 +254,7 @@ public class Menu {
         for (int i = 0; i < typeList.length; i++) {
             System.out.println((i + 1) + ". " + typeList[i]);
         } 
-        int choice = scnr.nextInt(); 
+        int choice = readIntExit(); 
         //throw an exception if not int
         scnr.nextLine(); 
         // scnr.nextLine() allows petName to be read because for some reason a nextLine() right after
@@ -269,14 +270,14 @@ public class Menu {
 
         //PET NAME
         System.out.println("\nWhat's your pet's name?");
-        String petName = scnr.nextLine();
+        String petName = readStringExit();
 
         System.out.println("\nWhat's " + petName + "'s bloodType?");
         String[] bloodTypes = {"O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"};
         for (int i = 0; i < bloodTypes.length; i++) {
             System.out.println((i + 1) + ". " + bloodTypes[i]);
         }   
-        choice = scnr.nextInt();
+        choice = readIntExit();
         String bloodType;
         if(choice >= 1 && choice <= bloodTypes.length){
             bloodType = bloodTypes[choice -1];
@@ -289,12 +290,12 @@ public class Menu {
         
         //PET AGE
         System.out.println("\nWhat's " + petName +"'s age? (years)");
-        int petAge = scnr.nextInt();
+        int petAge = readIntExit();;
         scnr.nextLine();
 
         //PET COLOR
         System.out.println("\nWhat color is "+ petName+ "?");
-        String speciesColor = scnr.nextLine();
+        String speciesColor = readStringExit();
         
         //PET GENDER
         System.out.println("\nWhat's "+petName+"'s gender? (1-2)");
@@ -302,7 +303,7 @@ public class Menu {
         for (int i = 0; i < genderList.length; i++) {
             System.out.println((i + 1) + ". " + genderList[i]);
         }   
-        choice = scnr.nextInt();
+        choice = readIntExit();
         String petGender;
         if(choice >= 1 && choice <= genderList.length){
             petGender = genderList[choice -1];
@@ -337,7 +338,7 @@ public class Menu {
             Pet p = registeredPets.get(i);
             System.out.printf("%d) %s (%s, %d years)\n", i + 1, p.getName(), p.getPetType(), p.getAge());
         }
-        int petChoice = scnr.nextInt();
+        int petChoice = readIntExit();
         Pet chosenPet = registeredPets.get(petChoice - 1);
 
         // 2. Select a vet
@@ -346,7 +347,7 @@ public class Menu {
             Vet v = vetList.get(i);
             System.out.printf("%d) %s - %s - %s\n", i + 1, v.getName(), v.getTitle(), v.getAvailableDays());
         }
-        int vetChoice = scnr.nextInt();
+        int vetChoice = readIntExit();
         Vet chosenVet = vetList.get(vetChoice - 1);
 
         // 3. Choose a date (simplified: pick today)
@@ -368,7 +369,7 @@ public class Menu {
             System.out.printf("%d) %s [%s]\n", i + 1, slots.get(i), status);
         }
 
-        int slotChoice = scnr.nextInt();
+        int slotChoice = readIntExit();
         LocalDateTime when = LocalDateTime.of(date, slots.get(slotChoice - 1));
 
         // 5. Book
@@ -383,5 +384,78 @@ public class Menu {
         return;
     }
 
+    private void quit(){
+      System.out.println("Goobye!");
+         scnr.close();
+         System.exit(0);
+    }
 
+    private String readStringExit(){
+      String s = scnr.nextLine().trim();
+      if ("EXIT".equalsIgnoreCase(s)){
+         quit();
+         return "EXIT";
+      }
+      return s;
+    }
+
+    private int readIntExit() {
+    while (true) {
+        if (!scnr.hasNext()) {
+            quit(); 
+        }
+
+        if (scnr.hasNextInt()) {
+            int v = scnr.nextInt();
+            if (scnr.hasNextLine()) scnr.nextLine(); 
+            return v;
+        }
+
+        String tok = scnr.next().trim();
+        if ("EXIT".equalsIgnoreCase(tok)) {
+            quit();
+        }
+        if (scnr.hasNextLine()) scnr.nextLine();
+
+        System.out.print("Please enter a number (or type EXIT): ");
+    }
+}
+
+    public void displayAppointmentTime(){
+        //Appointment Scheduling Section
+        System.out.println("Here are the availible appointment times for today:");
+        LocalTime time1 = LocalTime.of(12, 0);
+        LocalTime time2 = LocalTime.of(13, 0); //1pm
+        LocalTime time3 = LocalTime.of(14, 0); //2pm
+        LocalTime time4 = LocalTime.of(15, 0); //3pm
+        LocalTime time5 = LocalTime.of(16, 0); //4pm
+
+        System.out.println("1. " + time1);
+        System.out.println("2. " + time2);
+        System.out.println("3. " + time3);
+        System.out.println("4. " + time4);
+        System.out.println("5. " + time5);
+        System.out.println("Please enter your choice (1-5)");
+        int appointmentTime = readIntExit();
+
+        //converting (int) appointmentTime into LocalTime reference 
+        LocalTime timeChoice;
+        if (appointmentTime == 1) {
+            timeChoice = time1;
+        } else if (appointmentTime == 2) {
+            timeChoice = time2;
+        }
+        else if (appointmentTime == 3) {
+            timeChoice = time2;
+        } 
+        else if (appointmentTime == 4) {
+            timeChoice = time2;
+        }
+        else {
+            timeChoice = time5;
+        }
+
+        LocalDateTime appointmentDateTime = LocalDateTime.of(LocalDate.now(), timeChoice);
+        System.out.println(appointmentDateTime);
+    }
 }

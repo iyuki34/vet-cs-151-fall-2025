@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.util.Set;
 
+import Clinic.Exceptions.BookingConflictException;
 import Clinic.Exceptions.InvalidMenuChoiceException;
 
 public class Menu {

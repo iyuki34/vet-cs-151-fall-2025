@@ -9,13 +9,12 @@ public abstract class Medication implements Service{
     private int numDosesInStock;
     //private refilldate;
     public abstract String toHeal();
-    public abstract void refillOrder();
+    public abstract String toString();
 
     public Medication(String medicationName, double price, int numDosesInStock) {
         this.medicationName = medicationName;
         this.price = price;
         this.numDosesInStock = numDosesInStock;
-        //this.expirationDate; // get from appointment
     }
     
     protected void setStock(int numDosesInStock){
@@ -37,5 +36,6 @@ public abstract class Medication implements Service{
         }
         numDosesInStock--;
     }
+    
     
 }

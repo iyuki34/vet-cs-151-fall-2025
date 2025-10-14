@@ -45,6 +45,16 @@ public class BookingHelper {
         return out;
     }
 
+    // list all appointments for a pet (sorted by datetime)
+    public List<AppointmentV2> getAppointmentsFor(Pet pet) {
+        List<AppointmentV2> out = new ArrayList<>();
+        for (AppointmentV2 a : bookings) {
+            if (a.getPet().equals(pet)) out.add(a);
+        }
+        out.sort(Comparator.comparing(AppointmentV2::getWhen));
+        return out;
+    }
+
     // list all bookings (debug)
     public List<AppointmentV2> allBookings() {
         return Collections.unmodifiableList(bookings);

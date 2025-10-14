@@ -1,34 +1,32 @@
-package Clinic;
+    package Clinic;
 
 
-public class coughingMedicine extends Medication implements Service{
-/** There's no reason to re-modify the medication names and price */
-    private final double insuranceRate = .65;
-    public coughingMedicine() {
-        super("Coughing Medication", 50.0,30); 
-    }
+    public class coughingMedicine extends Medication implements Service{
+    /** There's no reason to re-modify the medication names and price */
+        private final double insuranceRate = .65;
+        public coughingMedicine() {
+            super("Coughing Medication", 50.0,30); 
+        }
 
-    @Override
-    public String toHeal() {
-       return "Healed coughing";
-    }
+        @Override
+        public String toHeal() {
+        return "Your pet has inflammation. Prescribing coughing medicine";
+        }
 
-    //still need to consider insurance. or maybe do insurance after the final cost
-    public double getCost(){
-        return getPrice();
-    }
+        //still need to consider insurance. or maybe do insurance after the final cost
+        public double getCost(){
+            return getPrice();
+        }
 
-    @Override
-    public String getDescription() {
-        return "Medication for treating coughing symptoms.";
-    }
+        @Override
+        public String getDescription() {
+            return "Medication for treating coughing symptoms for symptoms such as sore throat, difficulty for swallowing, etc...";
+        }
 
-    @Override
-    public void refillOrder() {
-        if (getStock() == 1){
-            System.out.println("Refilling Doses!");
-            setStock(30);
+        @Override
+        public String toString(){
+            return "Coughing Medication Pills, Price: " + getCost() + " , Quantity: " + getStock();
         }
     }
-    
-}
+        
+

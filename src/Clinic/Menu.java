@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
@@ -19,7 +20,8 @@ public class Menu {
    private ArrayList<Vet> vetList = new ArrayList<>();
    private List<Pet> registeredPets = new ArrayList<>();
    private List<AppointmentV2> appointments = new ArrayList<>();
-   private BookingHelper bookingHelper = new BookingHelper(); // <-- Add this
+   private BookingHelper bookingHelper = new BookingHelper();
+   private List<Service> services = new ArrayList<>();
    private Owner user = null; //tracks the current user using scanner
    private PaymentMethod method;
 
@@ -28,7 +30,7 @@ public class Menu {
    
    public Menu(){
       Vet generalVet = new Vet("Dr. Ethan Hayes", "M", 65, "General Expert", "Monday, Tuesday, Wednesday, Thursday", "8AM-3PM");
-      Vet catVet = new Vet("Dr.", "F", 32, "Cat Expert", "Monday, Thursday, Saturday", "12PM-5PM");
+      Vet catVet = new Vet("Dr. Abigal Lee", "F", 32, "Cat Expert", "Monday, Thursday, Saturday", "12PM-5PM");
       Vet dogVet = new Vet("Dr. Marcus Liu", "M", 35, "Dog Expert", "Sunday, Tuesday, Thuesday, Saturday", "12PM-5PM");
       Vet birdVet = new Vet("Dr. Emily Carter", "F", 28, "Bird Expert","Monday, Tuesday, Friday", "1PM-6PM");
       Vet reptileVet = new Vet("Dr. Natalie Nguyen Sophia Patel", "F", 25,"Reptile Expert","Friday, Tuesday", "1PM-8PM");
@@ -85,10 +87,10 @@ public class Menu {
         System.out.println("What would you like to do today?");
         System.out.println("1. Register a pet");
         System.out.println("2. Display Veterinarians");
-        System.out.println("3. Check Medical Records");
+        System.out.println("3. Check Pet's Registration Info");
         System.out.println("4. Select your pet and Book an appointment");
-         System.out.println("5. Go to appointment");
-         System.out.println("6. Pay total");
+        System.out.println("5. Go to appointment check up");
+        System.out.println("6. Pay total");
         System.out.println("7. Exit Vet\n ");
 
         int option = readIntExit();;
@@ -140,7 +142,7 @@ public class Menu {
             bookAppointment();
         }
         if (option == 5){
-         displayAppointment();
+           displayTreatmentAppointment();
         }
         if (option == 6){
             displayPaymentMethod();
@@ -210,24 +212,11 @@ public class Menu {
         {
             System.out.println("Name: " + pet.getName() +"\nPet Type: " + pet.getPetType() + "\nAge: " + pet.getAge() + "\nGender : " +pet.getGender()
             + "\nBlood Type: " + pet.getBloodType() + "\nColor: " + pet.getSpeciesColor() +"\n");
-            /**
-             * need appointment class to be done and the option == 2 in main menu logic flow to be done
-             * 
-             * something like this? 
-             * Purpose: print out medical records and past cost if there's any
-             * for (Appointment apt : appointments) {
-            //     if (apt.getPet().equals(p)) {
-            //         // display diagnosis, services, and costs
-            //     }
-             */
-        }
 
-        //forced to go back to main menu bc this isn't the last stop
-        System.out.println("1. Back to main menu\n");
-        return;  
+        }
+        }
     }
 
-   }
 
    public void displayVetenarians(){
         System.out.println("===All Vetenarians===");
@@ -347,7 +336,7 @@ public class Menu {
             return;
         }
 
-        // 1. Select a pet
+        // 1. Select one pet
         System.out.println("Select a pet to book for:");
         for (int i = 0; i < registeredPets.size(); i++) {
             Pet p = registeredPets.get(i);
@@ -489,12 +478,11 @@ public class Menu {
     }
 
     public void displayPaymentMethod(){
-      if (bookingHelper.allBookings().isEmpty()){
-         System.out.println("You have no appointments. Go back to menu.");
-         return;
-      }
+      if (totalCost == 0){
+            System.out.println("You have no outstanding bill. Go back to menu.");
+            return;
+        }
       System.out.println("Great, you have decided to pay!");
-
       System.out.println("What type of format would you like to pay?");
       System.out.println("1. Cash");
       System.out.println("2. Card");
@@ -513,7 +501,14 @@ public class Menu {
 
       }
 
-
+      System.out.println("Here are the medications prescribed and bill:");
+      System.out.println();
+      for(Service service : services)
+      {
+        System.out.println(service.toString());
+        System.out.println("Purpose of medication: "+ service.getDescription() + "\n");
+        
+      }
       System.out.println("Your total cost will be " + totalCost + ". Is that okay?");
       System.out.println("1. Yes");
       System.out.println("2. No");
@@ -521,39 +516,91 @@ public class Menu {
       int confirm = readIntExit();
         if (confirm == 1) {
             System.out.println("Payment confirmed! Thank you for your business.");
+            totalCost = 0;
         } else {
             System.out.println("Payment canceled.");
         }
 
     }
 
-    void displayAppointment(){
+    //Select appointment
+    //Mark as completed
+    //Remove from queue to avoid spamming going to appointment which rises the prices
+    void displayTreatmentAppointment(){
       if (bookingHelper.allBookings().isEmpty()){
          System.out.println("You have no appointments. Go back to menu.");
+
          return;
       }
-      System.out.println("It's time for the appointment.");
-      System.out.println("We will checkup on your pet.");
+      System.out.println("\nShowing list of pending appointments");
+      //selectedApt = which appointment to simulate the vet's healing and bills
+      List<AppointmentV2> selectedApts = selectAppointmentToProcess(); 
+
+      AppointmentV2 appt = selectedApts.get(0); 
+    
+
+      System.out.println("It's time for the appointment with ." + appt.getVet().getName() + " for " + appt.getPet().getName() + ".");
+      System.out.println(appt);
+
       int result = (int)(Math.random() * 3);
 
       if (result == 0) {
         System.out.println("Your pet is perfectly fine! No medicine needed.");
+        bookingHelper.cancel(appt);
         return;
     } else if (result == 1) {
-         System.out.println("Your pet has inflammation. Prescribing inflammation medicine.");
          inflammationMedicine inflameMed = new inflammationMedicine();
+         services.add(inflameMed);
+         System.out.println(inflameMed.toHeal());
 
          double cost = inflameMed.getCost();
          totalCost += cost;
          inflameMed.useOneDose();
-         System.out.println("Added to total amount");
+         System.out.println("The inflammation medicine is around $" + cost + "\nAdded to total amount: " + totalCost + "\n");
     } else {
-        System.out.println("Your pet has coughing symptoms. Prescribing coughing medicine.");
         coughingMedicine coughMedicine = new coughingMedicine();
+        services.add(coughMedicine);
+        System.out.println(coughMedicine.toHeal());
+
         double cost = coughMedicine.getCost();
         totalCost += cost;
         coughMedicine.useOneDose();
-         System.out.println("Added to total amount");
+        System.out.println("The coughing medicine is around $" + cost + "\nAdded to total amount: " + totalCost + "\n");
     }
+    bookingHelper.cancel(appt);
+    System.out.println("Total Cost: " + totalCost);
+    
+    
+   }
+   private List<AppointmentV2> selectAppointmentToProcess() {
+    while(true){
+        List<AppointmentV2> currentBookings = bookingHelper.allBookings();
+        if(currentBookings.size() == 0)
+            System.out.println("\nYou have no appointments");
+        for (int i = 0; i < currentBookings.size(); i++) {
+                AppointmentV2 app = currentBookings.get(i);
+                System.out.printf("%d) %s with %s at %s\n", i + 1, app.getPet().getName(), app.getVet().getName(), app.getWhen());
+            }
+        System.out.println("\nChoose one pending appointment to process");
+        try {
+                int choice = scnr.nextInt();
+                scnr.nextLine(); 
+                
+                if (choice > 0 && choice <= currentBookings.size()) {
+                    // Returns a list containing the single selected appointment
+                    List<AppointmentV2> selected = new ArrayList<>();
+                    selected.add(currentBookings.get(choice - 1));
+                    return selected; 
+                } else {
+                    System.err.println("Invalid choice.");
+                }
+            } catch (InputMismatchException e) {
+                System.err.println("\nInvalid input. Please enter a number.");
+                scnr.nextLine();
+            }
+
+    }
+
+    
    }
 }

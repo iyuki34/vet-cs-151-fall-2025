@@ -4,12 +4,12 @@ public class inflammationMedicine extends Medication implements Service{
     /** There's no reason to re-modify the medication names and price */
     
     public inflammationMedicine() {
-        super("Anti-Inflammatory Cream", 100.00,10); 
+        super("Anti-Inflammatory Cream", 100.00,1); 
     }
 
     @Override
     public String toHeal() {
-       return "Healed inflammation";
+       return "Your pet has inflammation. Prescribing inflammation medicine";
     }
 
     //still need to consider insurance. or maybe do insurance after the final cost
@@ -19,17 +19,16 @@ public class inflammationMedicine extends Medication implements Service{
     }
 
 
+
+    //should be used final payment method in menu
     @Override
     public String getDescription(){
-        return "Inflammation Medicine to help with burning sensations and ripped tissues";
+        return "Medication for treating redness, swelling, pain, etc... ";
     }
 
     @Override
-    public void refillOrder() {
-        if (getStock() == 1){
-            System.out.println("Refilling Doses!");
-            setStock(30);
-        }
+    public String toString() {
+        return "Anti-Inflammatory Cream, Price: " + getCost() + " , Quantity: " + getStock();
     }
 
 

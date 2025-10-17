@@ -1,8 +1,10 @@
 package Clinic;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 public class Vet {
+    private final List<String> surgeryLog = new ArrayList<>();
     private String name;
     private String gender;
     private int age;
@@ -42,6 +44,15 @@ public class Vet {
     
     public String getTitle() {
         return title;
+    }
+
+    public void logSurgery(Surgery surgery, Pet pet) {
+        String entry = "Performed " + surgery.getName() + " for " + pet.getName();
+        surgeryLog.add(entry);
+    }
+
+    public List<String> getSurgeryLog() {
+        return surgeryLog;
     }
 
      

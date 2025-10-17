@@ -4,13 +4,16 @@ public class Surgery implements Service {
     private String name;
     private int duration;
     private double cost;
-    private String vet;
+    private Vet vet;
     
-    public Surgery(String name, int duration, double cost, String vet) {
+    public Surgery(String name, int duration, double cost, Vet vet) {
         this.name = name;
         this.duration = duration;
         this.cost = cost;
         this.vet = vet;
+    }
+    public String getName() {
+        return name;
     }
 
     @Override

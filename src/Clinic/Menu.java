@@ -506,7 +506,7 @@ public class Menu {
       for(Service service : services)
       {
         System.out.println(service.toString());
-        System.out.println("Purpose of medication: "+ service.getDescription() + "\n");
+        System.out.println("Purpose of service: "+ service.getDescription() + "\n");
         
       }
       System.out.println("Your total cost will be " + totalCost + ". Is that okay?");

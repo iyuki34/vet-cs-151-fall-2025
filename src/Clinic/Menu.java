@@ -573,6 +573,7 @@ public class Menu {
         double cost = surgery.getCost();
         totalCost += cost;
         System.out.println("The surgery costs around $" + cost + "\nAdded to total amount: " + totalCost + "\n");
+        appt.getVet().logSurgery(surgery, appt.getPet());
     }
     bookingHelper.cancel(appt);
     System.out.println("Total Cost: " + totalCost);
